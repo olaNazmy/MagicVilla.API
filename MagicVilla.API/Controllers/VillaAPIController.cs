@@ -7,20 +7,53 @@ namespace MagicVilla.API.Controllers
 {
     [Route("/api/VillaAPI")]
     [ApiController]
-    public class VillaAPIController :ControllerBase
+    public class VillaAPIController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<VillaDTO> GetVillas()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<VillaDTO> GetVillas()
         {
-            return VillaStore.VillasList;
+            return Ok(VillaStore.VillasList);
         }
 
 
         // get by id that's integer 
+
         [HttpGet("{id:int}")]
-        public VillaDTO GetVillaById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public ActionResult<VillaDTO> GetVillaById(int id)
         {
-            return VillaStore.VillasList.FirstOrDefault(v=>v.Id == id);
+            if (id == 0)
+
+                return BadRequest();
+
+            else
+
+                return Ok(VillaStore.VillasList.FirstOrDefault(v => v.Id == id));
+        }
+
+
+        //Add new RecordS
+        [HttpPost]
+        public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villa)
+        {
+            if(villa == null)
+            {
+                return BadRequest(StatusCodes.Status400BadRequest);
+            }
+            if(villa.Id > 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            }
+
+            villa.Id = VillaStore.VillasList.OrderByDescending(v=>v.Id).FirstOrDefault().Id + 1;
+            VillaStore.VillasList.Add(villa);
+
+           return Ok(villa);
         }
     }
 }
