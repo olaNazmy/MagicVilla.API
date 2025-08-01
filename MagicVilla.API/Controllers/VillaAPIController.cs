@@ -43,7 +43,14 @@ namespace MagicVilla.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villa)
         {
-            if(villa == null)
+
+            //check modelState
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+
+            }
+            if (villa == null)
             {
                 return BadRequest(StatusCodes.Status400BadRequest);
             }
