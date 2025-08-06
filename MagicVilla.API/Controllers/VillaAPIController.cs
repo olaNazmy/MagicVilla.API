@@ -45,14 +45,16 @@ namespace MagicVilla.API.Controllers
         {
 
             //check modelState
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+            //if(!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            }
-            if (villa == null)
+            if (VillaStore.VillasList.FirstOrDefault(v=>v.Name.ToLower() == villa.Name.ToLower()) != null )
             {
-                return BadRequest(StatusCodes.Status400BadRequest);
+                // say it's already exist
+                ModelState.AddModelError("CustomError", "already exists !");
+                return BadRequest(ModelState);
             }
             if(villa.Id > 0)
             {
