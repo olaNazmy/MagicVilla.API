@@ -6,10 +6,12 @@ namespace MagicVilla.API.Models.DTO
     {
         public int Id { get; set; }
         [Required]
-        [MaxLength(15)]
+        [MaxLength(20)]
         public string Name { get; set; }
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        //public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int Occupancy { get; set; }
+        public int Sqft { get; set; }
 
 
 
