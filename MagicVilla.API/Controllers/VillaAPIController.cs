@@ -9,6 +9,9 @@ namespace MagicVilla.API.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
+        
+        // get all 
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<VillaDTO> GetVillas()
@@ -67,5 +70,27 @@ namespace MagicVilla.API.Controllers
 
            return CreatedAtRoute("GetVillaById", new {id=villa.Id},villa);
         }
+
+        // delete 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete("{id:int}", Name = "DeleteVilla")]
+        public IActionResult DeleteVilla(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.VillasList.FirstOrDefault(v => v.Id == id);
+            if (villa == null)
+            {
+                return NotFound();
+            }
+            VillaStore.VillasList.Remove(villa);
+            // in case of delete 204
+            return NoContent();
+        }
     }
+
 }
