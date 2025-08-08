@@ -1,15 +1,11 @@
 
+using MagicVilla.API.Logging;
 using Microsoft.AspNetCore.Builder;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// logger configuration 
-Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().
-    WriteTo.File("log/villaLogs.txt",rollingInterval: RollingInterval.Day).CreateLogger();
-
-builder.Host.UseSerilog();
+//builder.Host.UseSerilog();
 
 // add xml serializer
 
@@ -17,9 +13,13 @@ builder.Services.AddControllers(option =>
 {
     option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+// custom logger registeration
+builder.Services.AddSingleton<ILogging, Logging>();
 
 var app = builder.Build();
 
