@@ -4,6 +4,7 @@ using MagicVilla.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicVilla.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250809115505_SeedVillas")]
+    partial class SeedVillas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,40 +73,40 @@ namespace MagicVilla.API.Migrations
                         {
                             Id = 1,
                             Amenity = "Pool, Wi-Fi, Breakfast",
-                            CreationDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreationDate = new DateTime(2025, 8, 9, 14, 55, 2, 710, DateTimeKind.Local).AddTicks(8485),
                             Details = "A luxurious royal villa with ocean views.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa1.jpg",
                             Name = "Royal Villa",
                             Occupancy = 4,
                             Rate = 200.0,
                             Sqft = 550,
-                            UpdatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                            UpdatedDate = new DateTime(2025, 8, 9, 14, 55, 2, 736, DateTimeKind.Local).AddTicks(7036)
                         },
                         new
                         {
                             Id = 2,
                             Amenity = "Pool, Beach, Wi-Fi",
-                            CreationDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreationDate = new DateTime(2025, 8, 9, 14, 55, 2, 736, DateTimeKind.Local).AddTicks(7539),
                             Details = "Spacious villa with a private pool and beach access.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa2.jpg",
                             Name = "Premium Pool Villa",
                             Occupancy = 5,
                             Rate = 300.0,
                             Sqft = 600,
-                            UpdatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                            UpdatedDate = new DateTime(2025, 8, 9, 14, 55, 2, 736, DateTimeKind.Local).AddTicks(7550)
                         },
                         new
                         {
                             Id = 3,
                             Amenity = "Beach, Pool, Wi-Fi, Breakfast",
-                            CreationDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreationDate = new DateTime(2025, 8, 9, 14, 55, 2, 736, DateTimeKind.Local).AddTicks(7557),
                             Details = "Exclusive beachfront villa with modern amenities.",
                             ImageUrl = "https://dotnetmastery.com/bluevillaimages/villa3.jpg",
                             Name = "Luxury Beachfront Villa",
                             Occupancy = 6,
                             Rate = 400.0,
                             Sqft = 750,
-                            UpdatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                            UpdatedDate = new DateTime(2025, 8, 9, 14, 55, 2, 736, DateTimeKind.Local).AddTicks(7559)
                         });
                 });
 #pragma warning restore 612, 618
