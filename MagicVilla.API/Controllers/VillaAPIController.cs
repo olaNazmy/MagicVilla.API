@@ -182,13 +182,27 @@ namespace MagicVilla.API.Controllers
                 UpdatedDate = villa.UpdatedDate
             };
 
-            if(villa == null)
+            patchDto.ApplyTo(villaDTO, ModelState);
+
+            Villa model = new Villa()
             {
-                return BadRequest();
-            }
-            // use apply 
-            patchDto.ApplyTo(villaDTO,ModelState);
-            if(!ModelState.IsValid)
+                Id = villaDTO.Id,
+                Name = villaDTO.Name,
+                Amenity = villaDTO.Amenity,
+                Details = villaDTO.Details,
+                ImageUrl = villaDTO.ImageUrl,
+                Occupancy = villaDTO.Occupancy,
+                CreationDate = villaDTO.CreationDate,
+                Rate = villaDTO.Rate,
+                Sqft = villaDTO.Sqft,
+                UpdatedDate = villaDTO.UpdatedDate
+
+            };
+
+            db.Villas.Update(model);
+            db.SaveChanges();
+            //
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
