@@ -83,7 +83,7 @@ namespace MagicVilla.API.Controllers
             db.Villas.Add(model);
             db.SaveChanges();
 
-           return CreatedAtRoute("GetVillaById", new {id=model.Id},villa);
+           return CreatedAtRoute("GetVillaById", new {id=model.Id},model);
         }
 
         // delete 
@@ -149,7 +149,7 @@ namespace MagicVilla.API.Controllers
         [HttpPatch("{id:int}", Name = " UpdatePartialVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDTO> patchDto)
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDto)
         {
             if(patchDto == null || id == 0)
             {
@@ -158,7 +158,7 @@ namespace MagicVilla.API.Controllers
             // no tracking for this model 
             var villa = db.Villas.AsNoTracking().FirstOrDefault(v => v.Id == id);
 
-            VillaDTO villaDTO = new()
+            VillaUpdateDTO villaDTO = new()
             {
                 Id = villa.Id,
                 Name = villa.Name,
