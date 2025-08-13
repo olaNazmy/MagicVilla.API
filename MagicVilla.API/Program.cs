@@ -15,10 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // add xml serializer
 
-builder.Services.AddControllers(option =>
-{
-    option.ReturnHttpNotAcceptable = true;
-}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson()
+    .AddXmlDataContractSerializerFormatters();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
