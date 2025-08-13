@@ -56,14 +56,8 @@ namespace MagicVilla.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villa)
+        public ActionResult<VillaCreateDTO> CreateVilla([FromBody] VillaCreateDTO villa)
         {
-
-            //check modelState
-            //if(!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
 
             if (db.Villas.FirstOrDefault(v=>v.Name.ToLower() == villa.Name.ToLower()) != null )
             {
@@ -71,15 +65,9 @@ namespace MagicVilla.API.Controllers
                 ModelState.AddModelError("CustomError", "already exists !");
                 return BadRequest(ModelState);
             }
-            if(villa.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest);
-
-            }
             // convert from dto to villa ,, use auto mapping later 
             Villa model = new Villa()
             {
-                Id = villa.Id,
                 Name = villa.Name,
                 Amenity = villa.Amenity,
                 Details = villa.Details,
@@ -95,7 +83,7 @@ namespace MagicVilla.API.Controllers
             db.Villas.Add(model);
             db.SaveChanges();
 
-           return CreatedAtRoute("GetVillaById", new {id=villa.Id},villa);
+           return CreatedAtRoute("GetVillaById", new {id=model.Id},villa);
         }
 
         // delete 
