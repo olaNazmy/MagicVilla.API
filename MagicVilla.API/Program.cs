@@ -1,4 +1,5 @@
 
+using MagicVilla.API;
 using MagicVilla.API.Data;
 using MagicVilla.API.Logging;
 using Microsoft.AspNetCore.Builder;
@@ -6,18 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container, all services 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlConnection"));
 });
-//builder.Host.UseSerilog();
-
 // add xml serializer
-
 builder.Services.AddControllers()
     .AddNewtonsoftJson()
     .AddXmlDataContractSerializerFormatters();
+// add automapper config 
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
