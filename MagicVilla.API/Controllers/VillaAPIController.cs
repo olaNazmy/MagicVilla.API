@@ -3,6 +3,7 @@ using MagicVilla.API.Data;
 using MagicVilla.API.Logging;
 using MagicVilla.API.Models;
 using MagicVilla.API.Models.DTO;
+using MagicVilla.API.Repository.IRepository;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,13 @@ namespace MagicVilla.API.Controllers
     {
 
         // inject db context
-        private readonly ApplicationDbContext db;
+        private readonly IVillaRepository villaRepository;
         // auto mapper 
         private readonly IMapper mapper;
 
-        public VillaAPIController(ApplicationDbContext _db, IMapper _mapper)
+        public VillaAPIController(IVillaRepository _villaRepository, IMapper _mapper)
         {
-            db = _db;
+            villaRepository= _villaRepository;
             mapper = _mapper;
         }
         // get all 
@@ -31,7 +32,7 @@ namespace MagicVilla.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task <ActionResult<IEnumerable<VillaDTO>>> GetVillas()
         {
-            IEnumerable<Villa> villas = await db.Villas.ToListAsync();
+            IEnumerable<Villa> villas = await villaRepository.GetAllAsync();
             return Ok(mapper.Map<List<VillaDTO>>(villas));
         }
 
@@ -50,7 +51,7 @@ namespace MagicVilla.API.Controllers
             {
                 return BadRequest();
             }
-            var villa = await db.Villas.FirstOrDefaultAsync(v => v.Id == id);
+            var villa = await villaRepository.GetAsync(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
@@ -67,7 +68,7 @@ namespace MagicVilla.API.Controllers
         public  async Task<ActionResult<VillaCreateDTO>> CreateVilla([FromBody] VillaCreateDTO createDTO)
         {
 
-            if (await db.Villas.FirstOrDefaultAsync(v=>v.Name.ToLower() == createDTO.Name.ToLower()) != null )
+            if (await villaRepository.GetAsync(v=>v.Name.ToLower() == createDTO.Name.ToLower()) != null )
             {
                 // say it's already exist
                 ModelState.AddModelError("CustomError", "already exists !");
@@ -76,8 +77,8 @@ namespace MagicVilla.API.Controllers
 
             Villa model = mapper.Map<Villa>(createDTO);
 
-           await  db.Villas.AddAsync(model);
-           await db.SaveChangesAsync();
+           await  villaRepository.CreateAsync(model);
+           await villaRepository.SaveAsync();
 
            return CreatedAtRoute("GetVillaById", new {id=model.Id},model);
         }
@@ -93,13 +94,13 @@ namespace MagicVilla.API.Controllers
             {
                 return BadRequest();
             }
-            var villa = await db.Villas.FirstOrDefaultAsync(v => v.Id == id);
+            var villa = await villaRepository.GetAsync(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
             }
-             db.Villas.Remove(villa);
-            await db.SaveChangesAsync();
+             villaRepository.RemoveAsync(villa);
+            await villaRepository.SaveAsync();
             return NoContent();
         }
 

@@ -15,13 +15,13 @@ namespace MagicVilla.API.Repository
         {
             db= _db;
         }
-        public async Task Create(Villa entity)
+        public async Task CreateAsync(Villa entity)
         {
             await db.AddAsync(entity);
-            await Save();
+            await SaveAsync();
         }
 
-        public async Task<Villa> Get(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
+        public async Task<Villa> GetAsync(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
         {
             IQueryable<Villa> query = db.Villas;
             if (filter != null)
@@ -32,7 +32,7 @@ namespace MagicVilla.API.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<Villa>> GetAll(Expression<Func<Villa,bool>> filter = null)
+        public async Task<List<Villa>> GetAllAsync(Expression<Func<Villa,bool>> filter = null)
         {
             IQueryable<Villa> query = db.Villas;
             if (filter != null)
@@ -43,13 +43,13 @@ namespace MagicVilla.API.Repository
             return await query.ToListAsync();
         }
 
-        public async Task Remove(Villa entity)
+        public async Task RemoveAsync(Villa entity)
         {
             db.Remove(entity);
-            await Save();
+            await SaveAsync();
         }
 
-        public async Task Save()
+        public async Task SaveAsync()
         {
             await db.SaveChangesAsync();
         }
