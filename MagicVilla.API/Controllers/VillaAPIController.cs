@@ -118,42 +118,42 @@ namespace MagicVilla.API.Controllers
             // just use automapper 
             Villa model = mapper.Map<Villa>(villaDTO);
 
-            db.Villas.Update(model);
-            await db.SaveChangesAsync();
+            villaRepository.UpdateAsync(model);
+            await villaRepository.SaveAsync();
             return NoContent();
 
         }
 
 
-        // test patch 
-        [HttpPatch("{id:int}", Name = " UpdatePartialVilla")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDto)
-        {
-            if(patchDto == null || id == 0)
-            {
-                return BadRequest();
-            }
-            // no tracking for this model 
-            var villa = await db.Villas.AsNoTracking().FirstOrDefaultAsync(v => v.Id == id);
+        //// test patch 
+        //[HttpPatch("{id:int}", Name = " UpdatePartialVilla")]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDto)
+        //{
+        //    if(patchDto == null || id == 0)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    // no tracking for this model 
+        //    var villa = await villaRepository.GetAsync(v => v.Id == id);
 
-            // mapping 
-            VillaUpdateDTO villaDTO = mapper.Map<VillaUpdateDTO>(villa);
+        //    // mapping 
+        //    VillaUpdateDTO villaDTO = mapper.Map<VillaUpdateDTO>(villa);
 
-            patchDto.ApplyTo(villaDTO, ModelState);
-            Villa model = mapper.Map<Villa>(villaDTO);
+        //    patchDto.ApplyTo(villaDTO, ModelState);
+        //    Villa model = mapper.Map<Villa>(villaDTO);
 
-            db.Villas.Update(model);
-            await db.SaveChangesAsync();
-            //
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return NoContent();
+        //    villaRepository.UpdateAsync(model);
+        //    await villaRepository.SaveAsync();
+        //    //
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    return NoContent();
 
-        }
+        //}
 
     }
 

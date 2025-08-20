@@ -53,5 +53,11 @@ namespace MagicVilla.API.Repository
         {
             await db.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Villa entity)
+        {
+            db.Update(entity);
+            await SaveAsync();
+        }
     }
 }
