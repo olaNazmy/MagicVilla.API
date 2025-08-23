@@ -2,6 +2,7 @@
 using MagicVilla.API;
 using MagicVilla.API.Data;
 using MagicVilla.API.Logging;
+using MagicVilla.API.Repository;
 using MagicVilla.API.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson()
     .AddXmlDataContractSerializerFormatters();
 // repository registeration
-builder.Services.AddScoped<IVillaRepository,IVillaRepository>();
+builder.Services.AddScoped<IVillaRepository,VillaRepository>();
 // add automapper config 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
