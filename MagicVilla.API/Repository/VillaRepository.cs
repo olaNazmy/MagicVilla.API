@@ -1,63 +1,30 @@
-﻿using MagicVilla.API.Data;
+﻿// VillaRepository.cs
+using MagicVilla.API.Data;
 using MagicVilla.API.Models;
 using MagicVilla.API.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace MagicVilla.API.Repository
 {
-    public class VillaRepository : IVillaRepository
+    public class VillaRepository : Repository<Villa>, IVillaRepository
     {
-        // use context here
-        private readonly ApplicationDbContext db;
-        public VillaRepository(ApplicationDbContext _db)
+        private readonly ApplicationDbContext _db;
+
+        public VillaRepository(ApplicationDbContext db) : base(db)  
         {
-            db= _db;
-        }
-        public async Task CreateAsync(Villa entity)
-        {
-            await db.AddAsync(entity);
-            await SaveAsync();
+            _db = db;
         }
 
-        public async Task<Villa> GetAsync(Expression<Func<Villa,bool>> filter = null, bool tracked = true)
+        public async Task<Villa> UpdateAsync(Villa entity)
         {
-            IQueryable<Villa> query = db.Villas;
-            if (filter != null)
-            {
-                query = query.Where(filter);
+            entity.UpdatedDate = DateTime.UtcNow;
 
-            }
-            return await query.FirstOrDefaultAsync();
-        }
+            // If the entity isn’t tracked, attach it and mark as modified
+            _db.Villas.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
 
-        public async Task<List<Villa>> GetAllAsync(Expression<Func<Villa,bool>> filter = null)
-        {
-            IQueryable<Villa> query = db.Villas;
-            if (filter != null)
-            {
-                query = query.Where(filter);
-
-            }
-            return await query.ToListAsync();
-        }
-
-        public async Task RemoveAsync(Villa entity)
-        {
-            db.Remove(entity);
-            await SaveAsync();
-        }
-
-        public async Task SaveAsync()
-        {
-            await db.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Villa entity)
-        {
-            db.Update(entity);
-            await SaveAsync();
+            await _db.SaveChangesAsync();
+            return entity;
         }
     }
 }
