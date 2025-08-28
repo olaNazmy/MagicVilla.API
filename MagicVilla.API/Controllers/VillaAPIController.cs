@@ -65,12 +65,14 @@ namespace MagicVilla.API.Controllers
                 if (id == 0)
 
                 {
-                    return BadRequest();
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(response);
                 }
                 var villa = await villaRepository.GetAsync(v => v.Id == id);
                 if (villa == null)
                 {
-                    return NotFound();
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(response);
                 }
                 response.Result = (mapper.Map<VillaDTO>(villa));
                 response.StatusCode = HttpStatusCode.OK;
@@ -158,7 +160,8 @@ namespace MagicVilla.API.Controllers
             {
                 if (villaDTO == null || villaDTO.Id != id)
                 {
-                    return BadRequest();
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(response);
                 }
                 // just use automapper 
                 Villa model = mapper.Map<Villa>(villaDTO);
