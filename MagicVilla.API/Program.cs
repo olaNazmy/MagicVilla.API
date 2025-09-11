@@ -20,6 +20,7 @@ builder.Services.AddControllers()
     .AddXmlDataContractSerializerFormatters();
 // repository registeration
 builder.Services.AddScoped<IVillaRepository,VillaRepository>();
+builder.Services.AddScoped<IVillaNumberRepository,VillaNumberRepository>();
 // add automapper config 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
