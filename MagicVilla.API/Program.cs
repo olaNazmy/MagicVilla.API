@@ -2,6 +2,7 @@
 using MagicVilla.API;
 using MagicVilla.API.Data;
 using MagicVilla.API.Logging;
+using MagicVilla.API.Models;
 using MagicVilla.API.Repository;
 using MagicVilla.API.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,8 @@ builder.Services.AddControllers()
 // repository registeration
 builder.Services.AddScoped<IVillaRepository,VillaRepository>();
 builder.Services.AddScoped<IVillaNumberRepository,VillaNumberRepository>();
+builder.Services.AddScoped<APIResponse>();
+
 // add automapper config 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
